@@ -1,7 +1,7 @@
 # Vault config
 resource "google_compute_instance_template" "vault_template" {
   name_prefix = "quangpham5-vault"
-  tags        = ["http-server", "https-server", "gke-access"]
+  tags        = ["http-server", "https-server", "vault"]
 
   machine_type = "e2-medium"
 
@@ -14,8 +14,8 @@ resource "google_compute_instance_template" "vault_template" {
   metadata_startup_script = file("./startup_script_vault.sh")
 
   network_interface {
-    network    = google_compute_network.quangpham5.id
-    subnetwork = google_compute_subnetwork.asia-east1.id
+    network    = google_compute_network.quangpham5.self_link
+    subnetwork = google_compute_subnetwork.asia-east1.self_link
   }
 
   scheduling {
@@ -24,4 +24,32 @@ resource "google_compute_instance_template" "vault_template" {
     automatic_restart  = false
   }
 
+}
+
+resource "google_compute_health_check" "autohealing" {
+  name                = "autohealing-health-check"
+  check_interval_sec  = 5
+  timeout_sec         = 5
+  healthy_threshold   = 3
+  unhealthy_threshold = 10 # 50 seconds
+   
+   tcp_health_check {
+     port = 8200
+   }
+}
+
+resource "google_compute_instance_group_manager" "vault_instance_group" {
+  name = "quangpham5-vault-mig"
+  base_instance_name = "quangpham5-vault"
+
+  version {
+    instance_template  = google_compute_instance_template.vault_template.self_link
+  }
+
+  target_size  = 0
+
+  # auto_healing_policies {
+  #   health_check      = google_compute_health_check.autohealing.self_link
+  #   initial_delay_sec = 120
+  # }
 }
