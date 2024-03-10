@@ -3,7 +3,7 @@ locals {
   vault_instances = [
     "vault-1",
     "vault-2",
-    # "vault-3",
+    "vault-3",
   ]
 }
 
