@@ -46,7 +46,7 @@ resource "google_compute_firewall" "vault_internal_access" {
 
   allow {
     protocol = "tcp"
-    ports    = ["8200, 8201"]
+    ports    = ["8200", "8201"]
   }
 
   target_tags = ["vault"]
