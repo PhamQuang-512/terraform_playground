@@ -49,7 +49,7 @@ resource "google_compute_instance_group_manager" "vault_instance_group" {
     instance_template = google_compute_instance_template.vault_template.self_link
   }
 
-  target_size = 0
+  target_size = 3
 
   # auto_healing_policies {
   #   health_check      = google_compute_health_check.autohealing.self_link
