@@ -65,7 +65,7 @@ locals {
   ]
 }
 
-resource "google_compute_instance_from_template" "vault_1" {
+resource "google_compute_instance_from_template" "vault_instances" {
   for_each                 = toset(local.vault_instances)
   name                     = join("-", ["quangpham5", each.value])
   source_instance_template = google_compute_instance_template.vault_template.self_link_unique
