@@ -64,5 +64,5 @@ resource "google_compute_firewall" "gke_access_vault" {
   }
 
   target_tags   = ["vault"]
-  source_ranges = ["72.16.0.0/22"] # pod range
+  source_ranges = ["172.16.0.0/22"] # pod range
 }
