@@ -19,7 +19,7 @@ data "google_service_account_access_token" "default" {
   provider               = google.tokengen
   target_service_account = "iac-project@vinid-playground.iam.gserviceaccount.com"
   scopes                 = ["cloud-platform"]
-  lifetime               = "300s"
+  lifetime               = "3600s"
 }
 
 provider "google" {
