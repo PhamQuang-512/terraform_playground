@@ -66,3 +66,32 @@ resource "google_compute_firewall" "gke_access_vault" {
   target_tags   = ["vault"]
   source_ranges = ["172.16.0.0/22"] # pod range
 }
+
+
+resource "google_compute_firewall" "master_node" {
+  name      = "master-node"
+  network   = google_compute_network.quangpham5.self_link
+  direction = "INGRESS"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["6443", "2379", "2380", "10250", "10259", "10257"]
+  }
+
+  target_tags   = ["master"]
+  source_ranges = ["10.255.0.0/24"] # asia-east1 subnet range
+}
+
+resource "google_compute_firewall" "worker_node" {
+  name      = "worker-node"
+  network   = google_compute_network.quangpham5.self_link
+  direction = "INGRESS"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["10250", "30000-32767"]
+  }
+
+  target_tags   = ["worker"]
+  source_ranges = ["10.255.0.0/24"] # asia-east1 subnet range
+}

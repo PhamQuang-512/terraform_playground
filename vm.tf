@@ -1,17 +1,17 @@
 # Vault config
 locals {
-  vault_instances = [
-    "vault-1",
-    "vault-2",
-    "vault-3",
+  vm_instances = [
+    "vm-1",
+    "vm-2",
+    "vm-3",
   ]
 }
 
-resource "google_compute_instance" "vault_instances" {
-  for_each     = toset(local.vault_instances)
+resource "google_compute_instance" "vm_instances" {
+  for_each     = toset(local.vm_instances)
   name         = join("-", ["quangpham5", each.value])
   machine_type = "e2-medium"
-  tags         = ["vault", "http-server", "https-server"]
+  tags         = ["vault", "http-server", "https-server", "master", "worker"]
 
   boot_disk {
     initialize_params {
